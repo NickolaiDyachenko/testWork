@@ -78,13 +78,13 @@ function createObs(timeState) {
   return new Observable((subscriber) => {
     let intervalId = setInterval(() => {
       if (timeState.s >= 59) {
-        timeState.m++;
+        ++timeState.m;
         timeState.s = 0;
         if (timeState.m >= 59) {
-          timeState.h++;
+          ++timeState.h;
           timeState.m = 0;
         }
-      } else timeState.s++;
+      } else ++timeState.s;
 
       subscriber.next(timeState);
     }, 1000);
