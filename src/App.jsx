@@ -12,13 +12,13 @@ function App() {
 
   const onClickResetHandler = (e) => {
     if (!isTimerActiveState) setIsTimerActiveState(!isTimerActiveState);
-    subscriberState.unsubscribe();
+    if (subscriberState) subscriberState.unsubscribe();
 
-    setTimeState({ h: 0, m: 0, s: 0 });
+    setTimeState({ ...timeState, h: 0, m: 0, s: 0 });
 
     setSubscriberState(
       createObs({ h: 0, m: 0, s: 0 }).subscribe((v) => {
-        setTimeState({ ...v });
+        setTimeState({ ...timeState, ...v });
       })
     );
   };
@@ -27,19 +27,19 @@ function App() {
     if (!isTimerActiveState) {
       setSubscriberState(
         createObs(timeState).subscribe((v) => {
-          setTimeState({ ...v });
+          setTimeState({ ...timeState, ...v });
         })
       );
     } else {
       subscriberState.unsubscribe();
-      setTimeState({ h: 0, m: 0, s: 0 });
+      setTimeState({ ...timeState, h: 0, m: 0, s: 0 });
     }
     setIsTimerActiveState(!isTimerActiveState);
   };
 
   const onClickWaitHandler = (e) => {
     if (isWaitBtnTriggered) {
-      setIsTimerActiveState(!isTimerActiveState);
+      if (isTimerActiveState) setIsTimerActiveState(!isTimerActiveState);
       subscriberState.unsubscribe();
     }
 
